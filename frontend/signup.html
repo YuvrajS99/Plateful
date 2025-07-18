@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup | Plateful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f8f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #009688;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 10px;
+            text-align: center;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        <input type="text" id="name" placeholder="Full Name" required />
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <select id="role">
+            <option value="donor">Donor</option>
+            <option value="ngo">NGO</option>
+        </select>
+        <button onclick="signup()">Create Account</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        async function signup() {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const role = document.getElementById("role").value;
+            const message = document.getElementById("message");
+
+            // Basic validation
+            if (!name || !email || !password || !role) {
+                message.style.color = "red";
+                message.innerText = "Please fill in all fields!";
+                return;
+            }
+
+            try {
+                const response = await fetch("http://localhost:5000/api/auth/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ name, email, password, role })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    message.style.color = "green";
+                    message.innerText = "Registration successful!";
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1000);
+                } else {
+                    message.style.color = "red";
+                    message.innerText = result.message || "Registration failed.";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                message.style.color = "red";
+                message.innerText = "Server error. Please try again later.";
+            }
+        }
+    </script>
+</body>
+
+</html>
