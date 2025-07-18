@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donor Dashboard | Plateful</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #00695c, #004d40);
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 20px;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            font-size: 26px;
+            margin-bottom: 40px;
+        }
+
+        .nav-links {
+            flex-grow: 1;
+        }
+
+        .nav-links a {
+            display: block;
+            color: white;
+            padding: 12px 0;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            padding-left: 10px;
+            color: #ffecb3;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logout a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .logout a:hover {
+            text-decoration: underline;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+            width: calc(100% - 250px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            padding: 25px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero h1 {
+            margin: 0;
+            color: #004d40;
+        }
+
+        .hero img {
+            height: 100px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+        }
+
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #009688;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #00796b;
+        }
+
+        .success-popup {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+        }
+
+        .donation-item {
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .donation-item strong {
+            color: #00796b;
+        }
+
+        .impact-badge {
+            display: inline-block;
+            background-color: gold;
+            color: #333;
+            padding: 6px 14px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .how-it-works {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .how-it-works .section {
+            text-align: center;
+            flex: 1 1 30%;
+        }
+
+        .how-it-works img {
+            width: 80px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin: 0;
+                width: 100%;
+            }
+
+            .how-it-works {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="nav-links">
+            <h2><i class="fas fa-seedling"></i> Plateful</h2>
+            <a href="#donate"><i class="fas fa-plus-circle"></i> Donate Food</a>
+            <a href="#my-donations"><i class="fas fa-box"></i> My Donations</a>
+            <a href="#history"><i class="fas fa-history"></i> Donation History</a>
+            <a href="#profile"><i class="fas fa-user-cog"></i> Profile Settings</a>
+            <a href="#badges"><i class="fas fa-medal"></i> Impact Badges</a>
+        </div>
+        <div class="logout">
+            <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <!-- Hero with donor name and image -->
+        <div class="hero">
+            <div>
+                <h1 id="donorWelcome">Welcome, Donor!</h1>
+                <p>🌱 Share your surplus food and help those in need.</p>
+            </div>
+            <img src="../assets/food-donation-1.svg" alt="Food donation illustration" />
+        </div>
+
+        <!-- How It Works Section -->
+        <section class="section">
+            <h2>How It Works</h2>
+            <div class="how-it-works">
+                <div class="section">
+                    <img src="../assets/food-donation-2.svg" alt="Donate icon" />
+                    <h3>Donate Food</h3>
+                    <p>Share surplus meals with nearby NGOs.</p>
+                </div>
+                <div class="section">
+                    <img src="../assets/food-donation-3.svg" alt="Request pickup icon" />
+                    <h3>Request Pickup</h3>
+                    <p>Schedule a pickup for your donated food.</p>
+                </div>
+                <div class="section">
+                    <img src="../assets/food-donation-4.svg" alt="Help communities icon" />
+                    <h3>Help Communities</h3>
+                    <p>Your food reaches those who need it most.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donation Form -->
+        <section id="donate" class="section">
+            <h2><i class="fas fa-hand-holding-heart"></i> Add New Donation</h2>
+            <input id="title" type="text" placeholder="Food Title" />
+            <textarea id="description" placeholder="Description"></textarea>
+            <input id="location" type="text" placeholder="Location" />
+            <input id="quantity" type="number" placeholder="Quantity (Servings)" />
+            <input id="image" type="file" accept="image/*" />
+            <button onclick="submitDonation()">Submit</button>
+            <div class="success-popup" id="popup">✅ Donation submitted successfully!</div>
+        </section>
+
+        <!-- My Donations -->
+        <section id="my-donations" class="section">
+            <h2><i class="fas fa-clipboard-list"></i> My Donations</h2>
+            <!-- Dynamic list in future -->
+            <div class="donation-item">🍱 Biryani - 10 servings - <strong>Status: Pending</strong></div>
+        </section>
+
+        <!-- History -->
+        <section id="history" class="section">
+            <h2><i class="fas fa-history"></i> Donation History</h2>
+            <div class="donation-item">🥘 Rice - 8 servings - Delivered on 12 July</div>
+        </section>
+
+        <!-- Profile -->
+        <section id="profile" class="section">
+            <h2><i class="fas fa-user-cog"></i> Profile Settings</h2>
+            <input type="text" placeholder="Full Name" />
+            <input type="email" placeholder="Email" />
+            <input type="text" placeholder="Location" />
+            <button>Update Profile</button>
+        </section>
+
+        <!-- Badges -->
+        <section id="badges" class="section">
+            <h2><i class="fas fa-star"></i> Your Impact</h2>
+            <span class="impact-badge">Top Donor</span>
+            <span class="impact-badge">20+ Meals Donated</span>
+            <span class="impact-badge">Green Saver</span>
+        </section>
+    </div>
+
+    <!-- JS -->
+    <script>
+        function showPopup() {
+            const popup = document.getElementById("popup");
+            popup.style.display = "block";
+            setTimeout(() => (popup.style.display = "none"), 3000);
+        }
+
+        // Set donor name
+        const donorName = localStorage.getItem("donorName") || "Donor";
+        document.getElementById("donorWelcome").innerText = `Welcome, ${donorName}!`;
+
+        async function submitDonation() {
+            const title = document.getElementById("title").value;
+            const description = document.getElementById("description").value;
+            const location = document.getElementById("location").value;
+            const quantity = document.getElementById("quantity").value;
+            const donorId = localStorage.getItem("donorId");
+
+            if (!donorId) {
+                alert("❌ Donor not logged in!");
+                return;
+            }
+
+            const donation = {
+                title,
+                description,
+                location,
+                quantity,
+                donorId,
+            };
+
+            try {
+                const res = await fetch("http://localhost:5000/api/donations", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(donation),
+                });
+
+                const result = await res.json();
+
+                if (res.ok) {
+                    showPopup();
+                    document.getElementById("title").value = "";
+                    document.getElementById("description").value = "";
+                    document.getElementById("location").value = "";
+                    document.getElementById("quantity").value = "";
+                    document.getElementById("image").value = "";
+                } else {
+                    alert("❌ Failed: " + result.message);
+                }
+            } catch (error) {
+                console.error("Error submitting donation:", error);
+                alert("❌ Server error");
+            }
+        }
+    </script>
+</body>
+
+</html>

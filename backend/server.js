@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const authRoutes = require('./routes/auth'); // ✅ Import auth routes
+// Import Routes
+const authRoutes = require('./routes/auth');         // ✅ Auth routes
+const donationRoutes = require('./routes/donation'); // ✅ Donation routes
 
 const app = express();
 
@@ -17,7 +19,8 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Routes
-app.use("/api/auth", authRoutes); // ✅ Use auth routes
+app.use("/api/auth", authRoutes);
+app.use("/api/donations", donationRoutes); // ✅ Donation route added
 
 // Test route
 app.get("/", (req, res) => {
